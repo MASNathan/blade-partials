@@ -1,0 +1,14 @@
+{
+    "name": "masnathan/blade-partials",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "André Filipe",
+            "email": "andre.r.flip@gmail.com"
+        }
+    ],
+    "require": {
+        "illuminate/support": "^5.3"
+    }
+}
