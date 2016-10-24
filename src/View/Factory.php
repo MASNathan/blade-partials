@@ -12,6 +12,8 @@ class Factory
      */
     protected $blocks = [];
 
+    protected $optionalTagOpen = false;
+
     /**
      * Render a partial by echoing its contents.
      * The variables defined outside the scope of this block
@@ -23,7 +25,7 @@ class Factory
      *
      * @return void
      */
-    public function partial($file, $vars, $callback)
+    public function compilePartial($file, $vars, $callback)
     {
         $callback($file, $vars);
 
@@ -38,7 +40,7 @@ class Factory
      *
      * @return void
      */
-    public function block($block, $content = '')
+    public function compileBlock($block, $content = '')
     {
         if ($content === '') {
             ob_start() && $this->blocks[] = $block;
@@ -52,7 +54,7 @@ class Factory
      *
      * @return void
      */
-    public function endBlock()
+    public function compileEndBlock()
     {
         $last = array_pop($this->blocks);
 
@@ -67,7 +69,7 @@ class Factory
      *
      * @return string|null
      */
-    public function optional($block, $default = null)
+    public function compileOptional($block, $default = null)
     {
         return isset($this->blocks[$block]) ? $this->blocks[$block] : $default;
     }
@@ -80,7 +82,7 @@ class Factory
      * @return string
      * @throws RequiredBlockNotFoundException
      */
-    public function required($block)
+    public function compileRequired($block)
     {
         if (!isset($this->blocks[$block])) {
             throw new RequiredBlockNotFoundException($block);
