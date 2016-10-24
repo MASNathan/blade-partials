@@ -1,19 +1,8 @@
 <?php
 namespace MASNathan\BladePartials\View;
 
-use MASNathan\BladePartials\Exceptions\RequiredBlockNotFoundException;
-
 class Factory
 {
-    /**
-     * Storage for our blocks.
-     *
-     * @var array
-     */
-    protected $blocks = [];
-
-    protected $optionalTagOpen = false;
-
     /**
      * Render a partial by echoing its contents.
      * The variables defined outside the scope of this block
@@ -25,90 +14,10 @@ class Factory
      *
      * @return void
      */
-    public function compilePartial($file, $vars, $callback)
+    public function compilePartial(Partial $partial, $vars, $callback)
     {
-        $callback($file, $vars);
+        $vars['partial'] = $partial;
 
-        $this->flushBlocks();
-    }
-
-    /**
-     * Start injecting content into a block.
-     *
-     * @param  string $block
-     * @param  string $content
-     *
-     * @return void
-     */
-    public function compileBlock($block, $content = '')
-    {
-        if ($content === '') {
-            ob_start() && $this->blocks[] = $block;
-        } else {
-            $this->blocks[$block] = $content;
-        }
-    }
-
-    /**
-     * Stop injecting content into a block.
-     *
-     * @return void
-     */
-    public function compileEndBlock()
-    {
-        $last = array_pop($this->blocks);
-
-        $this->blocks[$last] = ob_get_clean();
-    }
-
-    /**
-     * Gets the value of a optional block
-     *
-     * @param string $block
-     * @param string $default
-     *
-     * @return string|null
-     */
-    public function compileOptional($block, $default = null)
-    {
-        return isset($this->blocks[$block]) ? $this->blocks[$block] : $default;
-    }
-
-    /**
-     * Gets the value of a required block
-     *
-     * @param string $block
-     *
-     * @return string
-     * @throws RequiredBlockNotFoundException
-     */
-    public function compileRequired($block)
-    {
-        if (!isset($this->blocks[$block])) {
-            throw new RequiredBlockNotFoundException($block);
-        }
-
-        return $this->blocks[$block];
-    }
-
-    /**
-     * Get the entire array of blocks.
-     *
-     * @return array
-     */
-    public function getBlocks()
-    {
-        return $this->blocks;
-    }
-
-    /**
-     * Flush all the block contents.
-     *
-     * @return void
-     */
-    public function flushBlocks()
-    {
-        $this->blocks = [];
+        $callback($vars);
     }
 }
-
