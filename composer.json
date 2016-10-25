@@ -11,5 +11,10 @@
   "require": {
     "illuminate/support": "^5.3",
     "masnathan/blade-partials": "dev-master"
+  },
+  "autoload": {
+    "psr-4": {
+      "MASNathan\\BladePartials\\": "src"
+    }
   }
 }
