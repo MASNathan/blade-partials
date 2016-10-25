@@ -11,6 +11,5 @@
   "require": {
     "illuminate/support": "^5.3",
     "masnathan/blade-partials": "dev-master"
-  },
-  "minimum-stability": "dev"
+  }
 }
